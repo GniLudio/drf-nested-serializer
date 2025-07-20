@@ -1,0 +1,31 @@
+site_name: Nested DRF Serializer
+
+markdown_extensions:
+    - pymdownx.superfences
+    - pymdownx.tabbed:
+          alternate_style: true
+
+theme:
+    name: material
+    features:
+        - navigation.instant
+        - navigation.instant.prefetch
+        - navigation.instant.progress
+        - navigation.footer
+        - content.code.copy
+        - content.code.select
+        - content.code.annotate
+    icon:
+        repo: fontawesome/brands/github
+
+#repo_url: https://github.com/gniludio/drf-nested-serializer
+#repo_name: gniludio/drf-nested-serializer
+# edit_uri: edit/main/docs/
+
+nav:
+    - Home: index.md
+    - Getting Started: getting_started.md
+    - Tests: tests.md
+
+extra_css:
+    - style.css
