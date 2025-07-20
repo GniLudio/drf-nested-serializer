@@ -15,12 +15,13 @@ theme:
         - content.code.copy
         - content.code.select
         - content.code.annotate
+        - content.action.edit
     icon:
         repo: fontawesome/brands/github
 
-#repo_url: https://github.com/gniludio/drf-nested-serializer
-#repo_name: gniludio/drf-nested-serializer
-# edit_uri: edit/main/docs/
+repo_url: https://github.com/gniludio/drf-nested-serializer
+repo_name: gniludio/drf-nested-serializer
+edit_uri: edit/main/docs/
 
 nav:
     - Home: index.md
