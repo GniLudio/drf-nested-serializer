@@ -1,8 +1,8 @@
-"""from django.db import models
+from django.db import models
 from django.test import TestCase
 
-from drf_nested_serializer.nested_serializer import NestedSerializer
-from drf_nested_serializer.parent_serializer import ParentSerializer
+from rest_framework.serializers import ModelSerializer
+from drf_nested_serializer.serializer import NestedSerializer
 
 
 class NestingNested1Model(models.Model):
@@ -47,13 +47,13 @@ class NestingNested7Model(models.Model):
     pass
 
 
-class NestingNested1Serializer(NestedSerializer):
+class NestingNested1Serializer(ModelSerializer):
     class Meta:
         model = NestingNested1Model
         fields = ("id", "name")
 
 
-class NestingNested2Serializer(ParentSerializer, NestedSerializer):
+class NestingNested2Serializer(NestedSerializer):
     one_to_one = NestingNested1Serializer()
 
     class Meta:
@@ -61,7 +61,7 @@ class NestingNested2Serializer(ParentSerializer, NestedSerializer):
         fields = ("id", "one_to_one")
 
 
-class NestingNested3Serializer(ParentSerializer, NestedSerializer):
+class NestingNested3Serializer(NestedSerializer):
     foreign_key = NestingNested2Serializer()
 
     class Meta:
@@ -69,7 +69,7 @@ class NestingNested3Serializer(ParentSerializer, NestedSerializer):
         fields = ("id", "foreign_key")
 
 
-class NestingNested4Serializer(ParentSerializer, NestedSerializer):
+class NestingNested4Serializer(NestedSerializer):
     many_to_many = NestingNested3Serializer(many=True)
 
     class Meta:
@@ -77,7 +77,7 @@ class NestingNested4Serializer(ParentSerializer, NestedSerializer):
         fields = ("id", "many_to_many")
 
 
-class NestingNested5Serializer(ParentSerializer, NestedSerializer):
+class NestingNested5Serializer(NestedSerializer):
     one_to_one_rel = NestingNested4Serializer()
 
     class Meta:
@@ -85,7 +85,7 @@ class NestingNested5Serializer(ParentSerializer, NestedSerializer):
         fields = ("id", "one_to_one_rel")
 
 
-class NestingNested6Serializer(ParentSerializer, NestedSerializer):
+class NestingNested6Serializer(NestedSerializer):
     many_to_one_rel = NestingNested5Serializer(many=True)
 
     class Meta:
@@ -93,7 +93,7 @@ class NestingNested6Serializer(ParentSerializer, NestedSerializer):
         fields = ("id", "many_to_one_rel")
 
 
-class NestingParentSerializer(ParentSerializer):
+class NestingParentSerializer(NestedSerializer):
     many_to_many_rel = NestingNested6Serializer(many=True)
 
     class Meta:
@@ -159,4 +159,3 @@ class NestingTest(TestCase):
         instance = serializer.save()
         result = NestingParentSerializer(instance=instance).data
         assert result == expected, f"\nResult:   {result}\nExpected: {expected}"
-"""

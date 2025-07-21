@@ -1,9 +1,9 @@
-"""from django.test import TestCase
-
-from drf_nested_serializer import ParentSerializer
-from drf_nested_serializer import NestedSerializer
+from django.test import TestCase
 
 from django.db import models
+
+from drf_nested_serializer.serializer import NestedSerializer
+from rest_framework.serializers import ModelSerializer
 
 
 # Non-Nullable Models and Serializers
@@ -59,43 +59,43 @@ class NonNullableM2MRNestedModel(models.Model):
     )
 
 
-class NonNullableO2ONestedSerializer(NestedSerializer):
+class NonNullableO2ONestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableO2ONestedModel
         fields = ("id",)
 
 
-class NonNullableFKNestedSerializer(NestedSerializer):
+class NonNullableFKNestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableFKNestedModel
         fields = ("id",)
 
 
-class NonNullableM2MNestedSerializer(NestedSerializer):
+class NonNullableM2MNestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2MNestedModel
         fields = ("id",)
 
 
-class NonNullableO2ORNestedSerializer(NestedSerializer):
+class NonNullableO2ORNestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableO2ORNestedModel
         fields = ("id",)
 
 
-class NonNullableM2ORNestedSerializer(NestedSerializer):
+class NonNullableM2ORNestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2ORNestedModel
         fields = ("id",)
 
 
-class NonNullableM2MRNestedSerializer(NestedSerializer):
+class NonNullableM2MRNestedSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2MRNestedModel
         fields = ("id",)
 
 
-class NonNullableParentSerializer(ParentSerializer):
+class NonNullableParentSerializer(NestedSerializer):
     one_to_one = NonNullableO2ONestedSerializer()
     foreign_key = NonNullableFKNestedSerializer()
     many_to_many = NonNullableM2MNestedSerializer(many=True, allow_empty=False)
@@ -142,4 +142,3 @@ class NullableTest(TestCase):
         instance = serializer.save()
         result = NonNullableParentSerializer(instance=instance).data
         assert result == expected, f"\nResult:   {result}\nExpected: {expected}"
-"""

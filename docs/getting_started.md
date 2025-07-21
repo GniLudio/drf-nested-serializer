@@ -21,39 +21,140 @@ class MyParentSerializer(NestedSerializer):
         fields = ("id", "nested")
 ```
 
+===
+
 ### Saving Data
 
 === "Omit"
+    
+    > Does nothing to `nested`
 
-    TODO
+    ```python
+    data = {
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
 
 === "`None`"
 
-    TODO
+    > Sets nested to `None`
+
+    ```python
+    data = {
+        "nested": None
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
 
 === "Without pk"
 
-    TODO
+    > Creates a new nested instance
+
+    ```python
+    data = {
+        "nested": None
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
+    
 
 === "With `None` pk"
 
-    TODO
+    > Creates a new nested instance
+
+    ```python
+    data = {
+        "nested": None
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
 
 === "Only pk"
 
-    TODO
+    > Sets `nested` to an existing nested instance 
+
+    ```python
+    data = {
+        "nested": None
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
 
 === "With pk"
 
-    TODO
+    > Sets `nested` to an existing nested instance and updates it
+
+    ```python
+    data = {
+        "nested": None
+    }
+    serializer = MyParentSerializer(data=data)
+    if serializer.is_valid():
+        instance = serializer.save()
+    ```
 
 ### Inclusion and Exclusion
 
-TODO
+By default all nested serializers are automatically handled, but you can explicitly specify which fields should be handled:
 
-### On Remove
+=== "Include all"
 
-TODO
+    ```python
+    class MyParentSerializer(NestedSerializer):
+        class Meta:
+            ...
+            nested_include = "__all__" # or omitted
+    ```
+
+=== "Include specific"
+
+    ```python
+    class MyParentSerializer(NestedSerializer):
+        class Meta:
+            ...
+            nested_include = ("field_1", "field_2", ...)
+    ```
+
+=== "Exclude all"
+
+    ```python
+    class MyParentSerializer(NestedSerializer):
+        class Meta:
+            ...
+            nested_exclude = "__all__"
+    ```
+
+=== "Exclude specific"
+
+    ```python
+    class MyParentSerializer(NestedSerializer):
+        class Meta:
+            ...
+            nested_exclude = ("field_1", "field_2", ...)
+    ```
+
+
+### Remove Behavior
+
+By default, the following happens to the nested instance if you remove it:
+* `ForeignKey` - Nothing
+* `ManyToManyField` - Nothing
+* `ManyToOneRel`
+    * Related field set to `None` if nullable
+    * Otherwise deleted
+* `OneToOneRel`
+    * Related field set to `None` if nullable
+    * Otherwise deleted
 
 ### Remarks
 
