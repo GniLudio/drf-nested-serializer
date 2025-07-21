@@ -28,7 +28,7 @@ class NestedSerializer(ModelSerializer):
         if not isinstance(data, dict):
             return False
         try:
-            pk_name = field.Meta.model._meta.pk.attname
+            pk_name = get_pk_name(field)
             return pk_name in data and len(data) == 1
         except Exception:
             return False
@@ -53,7 +53,9 @@ class NestedSerializer(ModelSerializer):
 
     def _add_primary_key_fields(self) -> None:
         for field in self._nested_serializers.values():
-            nested_pk_name = field.Meta.model._meta.pk.attname
+            nested_pk_name = get_pk_name(field)
+            if isinstance(field, ListSerializer):
+                field = field.child
             field.fields[nested_pk_name] = PrimaryKeyRelatedField(
                 queryset=field.Meta.model.objects.all(), required=False, allow_null=True
             )
@@ -61,7 +63,7 @@ class NestedSerializer(ModelSerializer):
 
     def _override_run_validation(self, field: ModelSerializer):
         original = field.run_validation
-        pk_name = field.Meta.model._meta.pk.attname
+        pk_name = get_pk_name(field)
 
         def run_validation(data=empty):
             original_required = {}
@@ -160,7 +162,9 @@ class NestedSerializer(ModelSerializer):
 
     def _update_or_create_nested_entry(self, name, value) -> models.Model:
         serializer = self._nested_serializers[name]
-        pk_name = serializer.Meta.model._meta.pk.attname
+        if isinstance(serializer, ListSerializer):
+            serializer = serializer.child
+        pk_name = get_pk_name(serializer)
         instance = value.pop(pk_name, None)
         if instance is None:
             return serializer.create(value)
@@ -205,17 +209,11 @@ class NestedSerializer(ModelSerializer):
         )
 
         serializers: dict[str, ModelSerializer] = {
-            **{
-                name: field
-                for name, field in self.fields.items()
-                if isinstance(field, ModelSerializer)
-            },
-            **{
-                name: field.child
-                for name, field in self.fields.items()
-                if isinstance(field, ListSerializer)
-                and isinstance(field.child, ModelSerializer)
-            },
+            field.source: field
+            for field in self.fields.values()
+            if isinstance(field, ModelSerializer)
+            or isinstance(field, ListSerializer)
+            and isinstance(field.child, ModelSerializer)
         }
 
         # None, None
@@ -230,14 +228,23 @@ class NestedSerializer(ModelSerializer):
         # List, None
         elif include is not None:
             return {
-                name: field for name, field in serializers.items() if name in include
+                name: field
+                for name, field in serializers.items()
+                if field.field_name in include
             }
         # None, List
         elif exclude is not None:
             return {
                 name: field
                 for name, field in serializers.items()
-                if name not in exclude
+                if field.field_name not in exclude
             }
         else:
             return {}
+
+
+def get_pk_name(serializer: ListSerializer | ModelSerializer):
+    if isinstance(serializer, ListSerializer):
+        serializer = serializer.child
+
+    return serializer.Meta.model._meta.pk.attname
