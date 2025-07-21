@@ -14,13 +14,11 @@ Find out more with the full [documentation](https://gniludio.github.io/drf-neste
 
 ## Example
 
-```python
+```python hl_lines="10"
 from rest_framework.serializers import ModelSerializer
 from drf_nested_serializer.serializer import NestedSerializer
 from .models import MyChildModel, MyParentModel
 
-
-# Serializer
 class MyChildSerializer(ModelSerializer):
     class Meta:
         model = MyChildModel
