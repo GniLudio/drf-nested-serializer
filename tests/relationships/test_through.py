@@ -29,11 +29,13 @@ class ThroughThroughSerializer(ModelSerializer):
 
 
 class ThroughParentSerializer(NestedSerializer):
-    through = ThroughThroughSerializer(many=True, required=False, allow_empty=True)
+    nested = ThroughThroughSerializer(
+        many=True, required=False, allow_empty=True, source="through"
+    )
 
     class Meta:
         model = ThroughParentModel
-        fields = ("id", "through")
+        fields = ("id", "nested")
 
 
 class ThroughTest(RelationshipTest, test.TestCase):

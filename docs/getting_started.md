@@ -378,16 +378,7 @@ By default all nested serializers are automatically handled, but you can explici
 
 ### Remove Behavior
 
-By default, the following happens to the nested instance if you remove it:
-
-- `ForeignKey` - Nothing
-- `ManyToManyField` - Nothing
-- `ManyToOneRel`
-    * Related field set to `None` if nullable
-    * Otherwise deleted
-* `OneToOneRel`
-    * Related field set to `None` if nullable
-    * Otherwise deleted
+By default removed instances are deleted.
 
 You can override that behavior with the `nested_remove_action` meta option:
 
@@ -396,9 +387,8 @@ class MyParentSerializer(NestedSerializer):
     class Meta:
         ...
         nested_remove_action = {
-            "nested": "__delete__" # to delete the nested instance
-            "nested": "__null__" # to set the related field on the nested instance to `NULL`
-            "nested": "__nothing__" # to do nothing
+            "nested": "__delete__" # to delete the removed instance
+            "nested": "__null__" # to set reverse `OneToOne`/`ForeignKey` relation to `NULL`
         }
 
 ```

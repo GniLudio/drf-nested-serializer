@@ -272,7 +272,7 @@ class ManyToOneRelTest(RelationshipTest, test.TestCase):
         expected = {"id": 3, "nested": []}
 
         parent = ManyToOneRelParentModel.objects.create(id=3)
-        nested = ManyToOneRelNestedModel.objects.create(
+        ManyToOneRelNestedModel.objects.create(
             id=5, name="Max Mustermann", parent=parent
         )
         instance = parent
