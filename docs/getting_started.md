@@ -234,8 +234,6 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
     ```
 
 
-
-
 ### Saving Data
 
 === "Omit"
@@ -335,9 +333,9 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
         instance = serializer.save()
     ```
 
-### Inclusion and Exclusion
+## Inclusion and Exclusion
 
-By default all nested serializers are automatically handled, but you can explicitly specify which fields should be handled:
+You can specify which nested serializers should be handled:
 
 === "Include all"
 
@@ -345,7 +343,7 @@ By default all nested serializers are automatically handled, but you can explici
     class MyParentSerializer(NestedSerializer):
         class Meta:
             ...
-            nested_include = "__all__" # or omitted
+            nested_include = "__all__" # default
     ```
 
 === "Include specific"
@@ -374,20 +372,3 @@ By default all nested serializers are automatically handled, but you can explici
             ...
             nested_exclude = ("field_1", "field_2", ...)
     ```
-
-
-### Remove Behavior
-
-By default removed instances are deleted. You can override that behavior with the `nested_remove_action` meta option:
-
-```python
-class MyParentSerializer(NestedSerializer):
-    class Meta:
-        ...
-        nested_remove_action = {
-            "nested": "__delete__" # to delete the removed instance
-            "nested": "__null__" # to set reverse `OneToOne`/`ForeignKey` relation to `NULL`
-        }
-
-```
-

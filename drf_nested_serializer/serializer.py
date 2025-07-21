@@ -11,27 +11,13 @@ from django.db import models
 
 INCLUDE_FIELD = "nested_include"
 EXCLUDE_FIELD = "nested_exclude"
-ON_REMOVE_FIELD = "nested_on_remove"
-
 ALL_FIELDS = "__all__"
-ON_REMOVE_DO_NOTHING = "__nothing__"
-ON_REMOVE_SET_NULL = "__null__"
-ON_REMOVE_DELETE = "__delete__"
 
 
 class NestedSerializer(ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._add_primary_key_fields()
-
-    def _is_pk_only_dict(self, data, field):
-        if not isinstance(data, dict):
-            return False
-        try:
-            pk_name = get_pk_name(field)
-            return pk_name in data and len(data) == 1
-        except Exception:
-            return False
 
     def create(self, validated_data):
         disabled_serializers = self._handle_forward_nested(validated_data)
@@ -267,8 +253,7 @@ class NestedSerializer(ModelSerializer):
                 for name, field in serializers.items()
                 if field.field_name not in exclude
             }
-        else:
-            return {}
+        return {}
 
 
 def get_pk_name(serializer: ListSerializer | ModelSerializer):
