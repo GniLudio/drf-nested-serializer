@@ -378,9 +378,7 @@ By default all nested serializers are automatically handled, but you can explici
 
 ### Remove Behavior
 
-By default removed instances are deleted.
-
-You can override that behavior with the `nested_remove_action` meta option:
+By default removed instances are deleted. You can override that behavior with the `nested_remove_action` meta option:
 
 ```python
 class MyParentSerializer(NestedSerializer):
