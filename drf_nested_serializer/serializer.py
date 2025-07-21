@@ -126,13 +126,41 @@ class NestedSerializer(ModelSerializer):
 
             if isinstance(model_field, models.OneToOneRel):
                 previous_instance = getattr(instance, nested_serializer.source, None)
-                next_instance = getattr(value, name, None)
+                pk_name = get_pk_name(nested_serializer)
+                next_instance = getattr(value, pk_name, None)
                 if previous_instance is not None and previous_instance != next_instance:
-                    if model_field.null:
+                    if model_field.field.null:
                         setattr(previous_instance, model_field.field.name, None)
                         previous_instance.save()
                     else:
                         previous_instance.delete()
+            elif isinstance(model_field, models.ManyToOneRel):
+                previous_instances = getattr(instance, nested_serializer.source).all()
+                pk_name = get_pk_name(nested_serializer)
+                next_instances = [
+                    entry[pk_name]
+                    for entry in value
+                    if entry.get(pk_name, None) is not None
+                ]
+
+                for entry in previous_instances:
+                    if entry not in next_instances:
+                        if model_field.field.null:
+                            setattr(entry, model_field.field.name, None)
+                        else:
+                            entry.delete()
+            elif isinstance(model_field, models.ManyToManyRel):
+                previous_instances = getattr(instance, nested_serializer.source).all()
+                pk_name = get_pk_name(nested_serializer)
+                next_instances = [
+                    entry[pk_name]
+                    for entry in value
+                    if entry.get(pk_name, None) is not None
+                ]
+
+                for entry in previous_instances:
+                    if entry not in next_instances:
+                        entry.delete()
 
         result = self._update_or_create_nested(
             reverse_data, self._nested_serializers_reverse
