@@ -2,26 +2,239 @@
 
 ## Usage
 
-```python
-from django.db import models
-from rest_framework.serializers import ModelSerializer
-from drf_nested_serializer.serializer import NestedSerializer
-from .models import MyNestedModel, MyParentModel
+A serializer just needs to inherit from `NestedSerializer` to allow writable nested serializers:
 
-class MyNestedSerializer(ModelSerializer):
-    class Meta:
-        model = MyNestedModel
-        fields = ("id", "name")
+=== "One to One"
 
-class MyParentSerializer(NestedSerializer):
-    nested = MyNestedSerializer(required=False, allow_null=True)
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
 
-    class Meta:
-        model = MyParentModel
-        fields = ("id", "nested")
-```
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
 
-===
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer()
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+    
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        pass
+
+    class MyParentModel(models.Model):
+        nested = models.OneToOneField(MyNestedModel, on_delete=models.CASCADE)
+    ```
+
+=== "One to One Rel"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
+
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer()
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        parent = models.OneToOneField("MyParentModel", on_delete=models.CASCADE, related_name="nested")
+
+    class MyParentModel(models.Model):
+        pass
+    ```
+
+=== "Foreign Key"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
+
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer()
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        pass
+
+    class MyParentModel(models.Model):
+        nested = models.ForeignKey(MyNestedModel, on_delete=models.CASCADE)
+    ```
+
+=== "Many to One Rel"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
+
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer(many=True)
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        parent = models.ForeignKey("MyParentModel", on_delete=models.CASCADE, related_name="nested")
+
+    class MyParentModel(models.Model):
+        pass
+    ```
+
+
+=== "Many to Many"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
+
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer(many=True)
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        pass
+
+    class MyParentModel(models.Model):
+        nested = models.ManyToManyField(MyNestedModel)
+    ```
+
+=== "Many to Many Rel"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyNestedModel, MyParentModel
+
+    class MyNestedSerializer(ModelSerializer):
+        class Meta:
+            model = MyNestedModel
+            fields = ("id", )
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        nested = MyNestedSerializer(many=True)
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "nested")
+    ```
+
+    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        parent = models.ManyToManyField(MyNestedModel, related_name="nested")
+
+    class MyParentModel(models.Model):
+        pass
+    ```
+
+=== "Through"
+
+    ```python hl_lines="10"
+    from drf_nested_serializer.serializer import NestedSerializer
+    from rest_framework.serializers import ModelSerializer
+    from .models import MyThroughModel, MyParentModel
+
+    class MyThroughSerializer(ModelSerializer):
+        class Meta:
+            model = MyThroughModel
+            fields = ("id", "nested")
+
+    class MyParentSerializer(NestedSerializer): # (1)
+        through = MyThroughSerializer(many=True)
+
+        class Meta:
+            model = MyParentModel
+            fields = ("id", "through")
+    ```
+
+    1. Inherit from `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+
+    ```python
+    from django.db import models
+
+    class MyNestedModel(models.Model):
+        pass
+
+    class MyParentModel(models.Model):
+        nested = models.ManyToManyField(MyNestedModel, through="MyThroughModel")
+
+    class MyThroughModel(models.Model):
+        nested = models.ForeignKey(MyNestedModel, on_delete=models.CASCADE)
+        parent = models.ForeignKey(MyParentModel, on_delete=models.CASCADE, related_name="through")
+    ```
+
+
+
 
 ### Saving Data
 
@@ -31,6 +244,10 @@ class MyParentSerializer(NestedSerializer):
 
     ```python
     data = {
+
+
+
+
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -39,11 +256,14 @@ class MyParentSerializer(NestedSerializer):
 
 === "`None`"
 
-    > Sets nested to `None`
+    > Sets `nested` to `None`
 
     ```python
     data = {
         "nested": None
+    
+    
+    
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -56,7 +276,10 @@ class MyParentSerializer(NestedSerializer):
 
     ```python
     data = {
-        "nested": None
+        "nested": {
+        
+            "name": "John Doe",
+        }
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -70,7 +293,10 @@ class MyParentSerializer(NestedSerializer):
 
     ```python
     data = {
-        "nested": None
+        "nested": {
+            "id": None,
+            "name": "John Doe",
+        }
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -83,7 +309,10 @@ class MyParentSerializer(NestedSerializer):
 
     ```python
     data = {
-        "nested": None
+        "nested": {
+            "id": 3,
+
+        }
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -96,7 +325,10 @@ class MyParentSerializer(NestedSerializer):
 
     ```python
     data = {
-        "nested": None
+        "nested": {
+            "id": 3,
+            "name": "John Doe",
+        }
     }
     serializer = MyParentSerializer(data=data)
     if serializer.is_valid():
@@ -147,16 +379,27 @@ By default all nested serializers are automatically handled, but you can explici
 ### Remove Behavior
 
 By default, the following happens to the nested instance if you remove it:
-* `ForeignKey` - Nothing
-* `ManyToManyField` - Nothing
-* `ManyToOneRel`
+
+- `ForeignKey` - Nothing
+- `ManyToManyField` - Nothing
+- `ManyToOneRel`
     * Related field set to `None` if nullable
     * Otherwise deleted
 * `OneToOneRel`
     * Related field set to `None` if nullable
     * Otherwise deleted
 
-### Remarks
+You can override that behavior with the `nested_remove_action` meta option:
 
--   Always adds a `PrimaryKeyRelatedField` to nested serializers.
--   When passing the primary key, all fields are set to `required=False` for validation.
+```python
+class MyParentSerializer(NestedSerializer):
+    class Meta:
+        ...
+        nested_remove_action = {
+            "nested": "__delete__" # to delete the nested instance
+            "nested": "__null__" # to set the related field on the nested instance to `NULL`
+            "nested": "__nothing__" # to do nothing
+        }
+
+```
+
