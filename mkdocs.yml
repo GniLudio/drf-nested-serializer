@@ -26,7 +26,6 @@ edit_uri: edit/main/docs/
 nav:
     - Home: index.md
     - Getting Started: getting_started.md
-    - Tests: tests.md
 
 extra_css:
     - style.css
