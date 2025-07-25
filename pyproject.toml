@@ -1,0 +1,26 @@
+[project]
+name = "drf-nested-serializer"
+version = "0.0.1"
+authors = [
+  { name="GniLudio" },
+]
+description = "Adds support for writable nested serializers to the Django REST framework."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Framework :: Django",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/gniludio/drf-nested-serializer"
+Documentation = "https://gniludio.github.io/drf-nested-serializer"
+
+[tool.setuptools]
+packages=['drf_nested_serializer']
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
