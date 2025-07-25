@@ -37,7 +37,7 @@ class NestedSerializer(ModelSerializer):
         instance.refresh_from_db()
         return instance
 
-    def _add_primary_key_fields(self) -> None:
+    def _add_primary_key_fields(self):
         for field in self._nested_serializers.values():
             nested_pk_name = get_pk_name(field)
             if isinstance(field, ListSerializer):
@@ -47,7 +47,7 @@ class NestedSerializer(ModelSerializer):
             )
             self._override_run_validation(field)
 
-    def _override_run_validation(self, field: ModelSerializer):
+    def _override_run_validation(self, field):
         original = field.run_validation
         pk_name = get_pk_name(field)
 
@@ -65,7 +65,7 @@ class NestedSerializer(ModelSerializer):
 
         field.run_validation = run_validation
 
-    def _handle_forward_nested(self, validated_data) -> list:
+    def _handle_forward_nested(self, validated_data):
         result = self._update_or_create_nested(
             validated_data, self._nested_serializers_forward
         )
@@ -83,7 +83,7 @@ class NestedSerializer(ModelSerializer):
 
         return disabled_serializers
 
-    def _pop_reverse_data(self, validated_data) -> dict:
+    def _pop_reverse_data(self, validated_data):
         return {
             name: validated_data.pop(name)
             for name in list(validated_data.keys())
@@ -94,7 +94,7 @@ class NestedSerializer(ModelSerializer):
         for serializer in disabled_serializers:
             serializer.read_only = False
 
-    def _handle_reverse_nested(self, instance, reverse_data) -> None:
+    def _handle_reverse_nested(self, instance, reverse_data):
         for name, value in reverse_data.items():
             if value is None:
                 continue
@@ -158,10 +158,8 @@ class NestedSerializer(ModelSerializer):
             if model_field.multiple:
                 getattr(instance, nested_serializer.source).set(value)
 
-    def _update_or_create_nested(
-        self, validated_data: dict, relations: dict
-    ) -> dict[str, models.Model | list[models.Model]]:
-        result: dict[str, models.Model | list[models.Model]] = {}
+    def _update_or_create_nested(self, validated_data, relations):
+        result = {}
         for name, value in validated_data.items():
             if name not in relations or value is None:
                 continue
@@ -174,7 +172,7 @@ class NestedSerializer(ModelSerializer):
                 ]
         return result
 
-    def _update_or_create_nested_entry(self, name, value) -> models.Model:
+    def _update_or_create_nested_entry(self, name, value):
         serializer = self._nested_serializers[name]
         if isinstance(serializer, ListSerializer):
             serializer = serializer.child
@@ -186,7 +184,7 @@ class NestedSerializer(ModelSerializer):
             return serializer.update(instance, value)
 
     @cached_property
-    def _nested_serializers_forward(self) -> dict[str, ModelSerializer]:
+    def _nested_serializers_forward(self):
         field_info = model_meta.get_field_info(self.Meta.model)
         return {
             name: field
@@ -195,7 +193,7 @@ class NestedSerializer(ModelSerializer):
         }
 
     @cached_property
-    def _nested_serializers_reverse(self) -> dict[str, ModelSerializer]:
+    def _nested_serializers_reverse(self):
         field_info = model_meta.get_field_info(self.Meta.model)
         return {
             name: field
@@ -204,7 +202,7 @@ class NestedSerializer(ModelSerializer):
         }
 
     @cached_property
-    def _nested_serializers(self) -> dict[str, ModelSerializer]:
+    def _nested_serializers(self):
         include = getattr(self.Meta, INCLUDE_FIELD, None)
         exclude = getattr(self.Meta, EXCLUDE_FIELD, None)
 
@@ -222,7 +220,7 @@ class NestedSerializer(ModelSerializer):
             f"Cannot set both '{INCLUDE_FIELD}' and '{EXCLUDE_FIELD}' options on serializer '{type(self).__name__}'."
         )
 
-        serializers: dict[str, ModelSerializer] = {
+        serializers = {
             field.source: field
             for field in self.fields.values()
             if isinstance(field, ModelSerializer)
@@ -256,7 +254,7 @@ class NestedSerializer(ModelSerializer):
         return {}
 
 
-def get_pk_name(serializer: ListSerializer | ModelSerializer):
+def get_pk_name(serializer):
     if isinstance(serializer, ListSerializer):
         serializer = serializer.child
 
