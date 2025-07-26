@@ -19,7 +19,7 @@ Homepage = "https://github.com/gniludio/drf-nested-model-serializer"
 Documentation = "https://gniludio.github.io/drf-nested-model-serializer"
 
 [tool.setuptools]
-packages=['drf_nested_serializer']
+packages=['drf_nested_model_serializer']
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]
