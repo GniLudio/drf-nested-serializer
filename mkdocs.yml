@@ -19,8 +19,8 @@ theme:
     icon:
         repo: fontawesome/brands/github
 
-repo_url: https://github.com/gniludio/drf-nested-serializer
-repo_name: gniludio/drf-nested-serializer
+repo_url: https://github.com/gniludio/drf-nested-model-serializer
+repo_name: gniludio/drf-nested-model-serializer
 edit_uri: edit/main/docs/
 
 nav:

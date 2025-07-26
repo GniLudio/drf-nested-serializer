@@ -14,7 +14,7 @@ EXCLUDE_FIELD = "nested_exclude"
 ALL_FIELDS = "__all__"
 
 
-class NestedSerializer(ModelSerializer):
+class NestedModelSerializer(ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._add_primary_key_fields()

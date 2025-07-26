@@ -2,7 +2,7 @@ from django import test
 from django.db import models
 from rest_framework.serializers import ModelSerializer
 
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 from tests.relationships.test_relationship import RelationshipTest
 
 
@@ -16,14 +16,14 @@ class ForeignKeyParentModel(models.Model):
     )
 
 
-class ForeignKeyNestedSerializer(ModelSerializer):
+class ForeignKeyNestedModelSerializer(ModelSerializer):
     class Meta:
         model = ForeignKeyNestedModel
         fields = ("id", "name")
 
 
-class ForeignKeyParentSerializer(NestedSerializer):
-    nested = ForeignKeyNestedSerializer(required=False, allow_null=True)
+class ForeignKeyParentSerializer(NestedModelSerializer):
+    nested = ForeignKeyNestedModelSerializer(required=False, allow_null=True)
 
     class Meta:
         model = ForeignKeyParentModel

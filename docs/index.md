@@ -2,7 +2,7 @@
 
 Adds support for writable nested serializers to the Django REST framework.
 
-Find out more with the full [documentation](https://gniludio.github.io/drf-nested-serializer).
+Find out more with the [Getting Started](https://gniludio.github.io/drf-nested-model-serializer/getting_started) guide.
 
 ## Features
 
@@ -16,7 +16,7 @@ Find out more with the full [documentation](https://gniludio.github.io/drf-neste
 
 ```python hl_lines="10"
 from rest_framework.serializers import ModelSerializer
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_serializer.serializer import NestedModelSerializer
 from .models import MyChildModel, MyParentModel
 
 class MyChildSerializer(ModelSerializer):
@@ -24,7 +24,7 @@ class MyChildSerializer(ModelSerializer):
         model = MyChildModel
         fields = ("id", "")
 
-class MyParentSerializer(NestedSerializer):
+class MyParentSerializer(NestedModelSerializer):
     nested = MyChildSerializer()
 
     class Meta:

@@ -2,29 +2,29 @@
 
 ## Usage
 
-A serializer just needs to inherit from `NestedSerializer` to allow writable nested serializers:
+A serializer just needs to inherit from `NestedModelSerializer` to allow writable nested serializers:
 
 === "One to One"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer()
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer()
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
     
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -39,24 +39,24 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "One to One Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer()
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer()
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
 
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -71,24 +71,24 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "Foreign Key"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer()
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer()
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
 
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -103,24 +103,24 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "Many to One Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer(many=True)
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer(many=True)
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
 
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -136,24 +136,24 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "Many to Many"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer(many=True)
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer(many=True)
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
 
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -168,24 +168,24 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "Many to Many Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
-    class MyNestedSerializer(ModelSerializer):
+    class MyNestedModelSerializer(ModelSerializer):
         class Meta:
             model = MyNestedModel
             fields = ("id", )
 
-    class MyParentSerializer(NestedSerializer): # (1)
-        nested = MyNestedSerializer(many=True)
+    class MyParentSerializer(NestedModelSerializer): # (1)
+        nested = MyNestedModelSerializer(many=True)
 
         class Meta:
             model = MyParentModel
             fields = ("id", "nested")
     ```
 
-    1. Inherit `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -200,7 +200,7 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
 === "Through"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedSerializer
+    from drf_nested_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyThroughModel, MyParentModel
 
@@ -209,7 +209,7 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
             model = MyThroughModel
             fields = ("id", "nested")
 
-    class MyParentSerializer(NestedSerializer): # (1)
+    class MyParentSerializer(NestedModelSerializer): # (1)
         through = MyThroughSerializer(many=True)
 
         class Meta:
@@ -217,7 +217,7 @@ A serializer just needs to inherit from `NestedSerializer` to allow writable nes
             fields = ("id", "through")
     ```
 
-    1. Inherit from `NestedSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
+    1. Inherit from `NestedModelSerializer` to allow writable nested serializers (instead of `ModelSerializer`)
 
     ```python
     from django.db import models
@@ -323,7 +323,7 @@ If not all nested serializers should be handled, you can explicitly include or e
 === "Include all (default)"
 
     ```python
-    class MyParentSerializer(NestedSerializer):
+    class MyParentSerializer(NestedModelSerializer):
         ...
         class Meta:
             ...
@@ -333,7 +333,7 @@ If not all nested serializers should be handled, you can explicitly include or e
 === "Include specific"
 
     ```python
-    class MyParentSerializer(NestedSerializer):
+    class MyParentSerializer(NestedModelSerializer):
         ...
         class Meta:
             ...
@@ -343,7 +343,7 @@ If not all nested serializers should be handled, you can explicitly include or e
 === "Exclude all"
 
     ```python
-    class MyParentSerializer(NestedSerializer):
+    class MyParentSerializer(NestedModelSerializer):
         ...
         class Meta:
             ...
@@ -353,7 +353,7 @@ If not all nested serializers should be handled, you can explicitly include or e
 === "Exclude specific"
 
     ```python
-    class MyParentSerializer(NestedSerializer):
+    class MyParentSerializer(NestedModelSerializer):
         ...
         class Meta:
             ...

@@ -2,7 +2,7 @@ from django import test
 from django.db import models
 from rest_framework.serializers import ModelSerializer
 
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 from tests.relationships.test_relationship import RelationshipTest
 
 
@@ -14,14 +14,16 @@ class ManyToManyParentModel(models.Model):
     nested = models.ManyToManyField(ManyToManyNestedModel)
 
 
-class ManyToManyNestedSerializer(ModelSerializer):
+class ManyToManyNestedModelSerializer(ModelSerializer):
     class Meta:
         model = ManyToManyNestedModel
         fields = ("id", "name")
 
 
-class ManyToManyParentSerializer(NestedSerializer):
-    nested = ManyToManyNestedSerializer(many=True, required=False, allow_empty=True)
+class ManyToManyParentSerializer(NestedModelSerializer):
+    nested = ManyToManyNestedModelSerializer(
+        many=True, required=False, allow_empty=True
+    )
 
     class Meta:
         model = ManyToManyParentModel

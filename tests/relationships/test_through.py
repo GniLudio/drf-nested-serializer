@@ -2,7 +2,7 @@ from django import test
 from django.db import models
 from rest_framework.serializers import ModelSerializer
 
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 from tests.relationships.test_relationship import RelationshipTest
 
 
@@ -28,7 +28,7 @@ class ThroughThroughSerializer(ModelSerializer):
         fields = ("id", "nested", "extra")
 
 
-class ThroughParentSerializer(NestedSerializer):
+class ThroughParentSerializer(NestedModelSerializer):
     through = ThroughThroughSerializer(many=True, required=False, allow_empty=True)
 
     class Meta:

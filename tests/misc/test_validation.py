@@ -2,14 +2,14 @@
 from django.db import models
 
 from drf_nested_serializer import ParentSerializer
-from drf_nested_serializer import NestedSerializer
+from drf_nested_serializer import NestedModelSerializer
 
 
 class InvalidEmptyNestedModel(models.Model):
     pass
 
 
-class InvalidEmptyNestedSerializer(NestedSerializer):
+class InvalidEmptyNestedModelSerializer(NestedModelSerializer):
     class Meta:
         model = InvalidEmptyNestedModel
         fields = ("id",)
@@ -20,7 +20,7 @@ class InvalidPKParentModel(models.Model):
 
 
 class InvalidPKParentSerializer(ParentSerializer):
-    nested = InvalidEmptyNestedSerializer()
+    nested = InvalidEmptyNestedModelSerializer()
 
     class Meta:
         model = InvalidPKParentModel

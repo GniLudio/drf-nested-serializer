@@ -3,7 +3,7 @@ from django.db import models
 
 from rest_framework.serializers import ModelSerializer
 
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 
 
 class ArgSourceNestedModel(models.Model):
@@ -14,14 +14,14 @@ class ArgSourceParentModel(models.Model):
     nested = models.ForeignKey(ArgSourceNestedModel, on_delete=models.CASCADE)
 
 
-class ArgSourceNestedSerializer(ModelSerializer):
+class ArgSourceNestedModelSerializer(ModelSerializer):
     class Meta:
         model = ArgSourceNestedModel
         fields = ("id", "name")
 
 
-class ArgSourceParentSerializer(NestedSerializer):
-    foo = ArgSourceNestedSerializer(source="nested")
+class ArgSourceParentSerializer(NestedModelSerializer):
+    foo = ArgSourceNestedModelSerializer(source="nested")
 
     class Meta:
         model = ArgSourceParentModel
@@ -36,22 +36,22 @@ class RequiredParentModel(models.Model):
     nested = models.ForeignKey(RequiredNestedModel, on_delete=models.CASCADE)
 
 
-class RequiredNestedSerializer(ModelSerializer):
+class RequiredNestedModelSerializer(ModelSerializer):
     class Meta:
         model = RequiredNestedModel
         fields = ("id",)
 
 
-class RequiredParentSerializer(NestedSerializer):
-    nested = RequiredNestedSerializer(required=True)
+class RequiredParentSerializer(NestedModelSerializer):
+    nested = RequiredNestedModelSerializer(required=True)
 
     class Meta:
         model = RequiredParentModel
         fields = ("id", "nested")
 
 
-class NotRequiredParentSerializer(NestedSerializer):
-    nested = RequiredNestedSerializer(required=False)
+class NotRequiredParentSerializer(NestedModelSerializer):
+    nested = RequiredNestedModelSerializer(required=False)
 
     class Meta:
         model = RequiredParentModel
@@ -66,7 +66,7 @@ class AllowNullParentModel(models.Model):
     nested = models.ForeignKey(AllowNullNestedModel, on_delete=models.CASCADE)
 
 
-class AllowNullNestedSerializer(ModelSerializer):
+class AllowNullNestedModelSerializer(ModelSerializer):
     class Meta:
         model = AllowNullNestedModel
         fields = ("id",)

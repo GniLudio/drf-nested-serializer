@@ -1,5 +1,5 @@
 [project]
-name = "drf-nested-serializer"
+name = "drf-nested-model-serializer"
 version = "0.0.1"
 authors = [
   { name="GniLudio" },
@@ -15,8 +15,8 @@ license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
 [project.urls]
-Homepage = "https://github.com/gniludio/drf-nested-serializer"
-Documentation = "https://gniludio.github.io/drf-nested-serializer"
+Homepage = "https://github.com/gniludio/drf-nested-model-serializer"
+Documentation = "https://gniludio.github.io/drf-nested-model-serializer"
 
 [tool.setuptools]
 packages=['drf_nested_serializer']

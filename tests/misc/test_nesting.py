@@ -2,7 +2,7 @@ from django.db import models
 from django.test import TestCase
 
 from rest_framework.serializers import ModelSerializer
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 
 
 class NestingNested1Model(models.Model):
@@ -53,7 +53,7 @@ class NestingNested1Serializer(ModelSerializer):
         fields = ("id", "name")
 
 
-class NestingNested2Serializer(NestedSerializer):
+class NestingNested2Serializer(NestedModelSerializer):
     one_to_one = NestingNested1Serializer()
 
     class Meta:
@@ -61,7 +61,7 @@ class NestingNested2Serializer(NestedSerializer):
         fields = ("id", "one_to_one")
 
 
-class NestingNested3Serializer(NestedSerializer):
+class NestingNested3Serializer(NestedModelSerializer):
     foreign_key = NestingNested2Serializer()
 
     class Meta:
@@ -69,7 +69,7 @@ class NestingNested3Serializer(NestedSerializer):
         fields = ("id", "foreign_key")
 
 
-class NestingNested4Serializer(NestedSerializer):
+class NestingNested4Serializer(NestedModelSerializer):
     many_to_many = NestingNested3Serializer(many=True)
 
     class Meta:
@@ -77,7 +77,7 @@ class NestingNested4Serializer(NestedSerializer):
         fields = ("id", "many_to_many")
 
 
-class NestingNested5Serializer(NestedSerializer):
+class NestingNested5Serializer(NestedModelSerializer):
     one_to_one_rel = NestingNested4Serializer()
 
     class Meta:
@@ -85,7 +85,7 @@ class NestingNested5Serializer(NestedSerializer):
         fields = ("id", "one_to_one_rel")
 
 
-class NestingNested6Serializer(NestedSerializer):
+class NestingNested6Serializer(NestedModelSerializer):
     many_to_one_rel = NestingNested5Serializer(many=True)
 
     class Meta:
@@ -93,7 +93,7 @@ class NestingNested6Serializer(NestedSerializer):
         fields = ("id", "many_to_one_rel")
 
 
-class NestingParentSerializer(NestedSerializer):
+class NestingParentSerializer(NestedModelSerializer):
     many_to_many_rel = NestingNested6Serializer(many=True)
 
     class Meta:

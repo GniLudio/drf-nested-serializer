@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from django.db import models
 
-from drf_nested_serializer.serializer import NestedSerializer
+from drf_nested_model_serilaizer.serializer import NestedModelSerializer
 from rest_framework.serializers import ModelSerializer
 
 
@@ -59,49 +59,51 @@ class NonNullableM2MRNestedModel(models.Model):
     )
 
 
-class NonNullableO2ONestedSerializer(ModelSerializer):
+class NonNullableO2ONestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableO2ONestedModel
         fields = ("id",)
 
 
-class NonNullableFKNestedSerializer(ModelSerializer):
+class NonNullableFKNestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableFKNestedModel
         fields = ("id",)
 
 
-class NonNullableM2MNestedSerializer(ModelSerializer):
+class NonNullableM2MNestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2MNestedModel
         fields = ("id",)
 
 
-class NonNullableO2ORNestedSerializer(ModelSerializer):
+class NonNullableO2ORNestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableO2ORNestedModel
         fields = ("id",)
 
 
-class NonNullableM2ORNestedSerializer(ModelSerializer):
+class NonNullableM2ORNestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2ORNestedModel
         fields = ("id",)
 
 
-class NonNullableM2MRNestedSerializer(ModelSerializer):
+class NonNullableM2MRNestedModelSerializer(ModelSerializer):
     class Meta:
         model = NonNullableM2MRNestedModel
         fields = ("id",)
 
 
-class NonNullableParentSerializer(NestedSerializer):
-    one_to_one = NonNullableO2ONestedSerializer()
-    foreign_key = NonNullableFKNestedSerializer()
-    many_to_many = NonNullableM2MNestedSerializer(many=True, allow_empty=False)
-    one_to_one_rel = NonNullableO2ORNestedSerializer()
-    many_to_one_rel = NonNullableM2ORNestedSerializer(many=True, allow_empty=False)
-    many_to_many_rel = NonNullableM2MRNestedSerializer(many=True, allow_empty=False)
+class NonNullableParentSerializer(NestedModelSerializer):
+    one_to_one = NonNullableO2ONestedModelSerializer()
+    foreign_key = NonNullableFKNestedModelSerializer()
+    many_to_many = NonNullableM2MNestedModelSerializer(many=True, allow_empty=False)
+    one_to_one_rel = NonNullableO2ORNestedModelSerializer()
+    many_to_one_rel = NonNullableM2ORNestedModelSerializer(many=True, allow_empty=False)
+    many_to_many_rel = NonNullableM2MRNestedModelSerializer(
+        many=True, allow_empty=False
+    )
 
     class Meta:
         model = NonNullableParentModel
