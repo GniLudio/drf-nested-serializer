@@ -38,13 +38,26 @@ class NestedModelSerializer(ModelSerializer):
         return instance
 
     def _add_primary_key_fields(self):
-        for field in self._nested_serializers.values():
+        for field_name, field in self._nested_serializers.items():
             nested_pk_name = get_pk_name(field)
             if isinstance(field, ListSerializer):
                 field = field.child
             field.fields[nested_pk_name] = PrimaryKeyRelatedField(
                 queryset=field.Meta.model.objects.all(), required=False, allow_null=True
             )
+            
+            # For reverse relationships, make the foreign key field pointing back to parent optional
+            if field_name in self._nested_serializers_reverse:
+                parent_model = self.Meta.model
+                for model_field in field.Meta.model._meta.get_fields():
+                    if (hasattr(model_field, 'related_model') and 
+                        model_field.related_model == parent_model and
+                        isinstance(model_field, models.ForeignKey)):
+                        fk_field_name = model_field.name
+                        if fk_field_name in field.fields:
+                            field.fields[fk_field_name].required = False
+                            field.fields[fk_field_name].allow_null = True
+            
             self._override_run_validation(field)
 
     def _override_run_validation(self, field):
@@ -100,11 +113,11 @@ class NestedModelSerializer(ModelSerializer):
                 continue
             model_field = self.Meta.model._meta.get_field(name)
             if isinstance(model_field, (models.OneToOneRel, models.ManyToOneRel)):
-                if not isinstance(value, list):
-                    value[model_field.field.name] = instance
-                else:
+                if isinstance(value, list):
                     for entry in value:
                         entry[model_field.field.name] = instance
+                else:
+                    value[model_field.field.name] = instance
         for name, value in reverse_data.items():
             nested_serializer = self.fields[name]
 
