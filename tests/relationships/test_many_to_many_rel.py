@@ -2,7 +2,7 @@ from django import test
 from django.db import models
 from rest_framework.serializers import ModelSerializer
 
-from drf_nested_model_serilaizer.serializer import NestedModelSerializer
+from drf_nested_model_serializer.serializer import NestedModelSerializer
 from tests.relationships.test_relationship import RelationshipTest
 
 
