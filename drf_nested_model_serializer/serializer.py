@@ -18,6 +18,7 @@ class NestedModelSerializer(ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._add_primary_key_fields()
+        self._make_related_field_read_only()
 
     def create(self, validated_data):
         disabled_serializers = self._handle_forward_nested(validated_data)
@@ -46,6 +47,16 @@ class NestedModelSerializer(ModelSerializer):
                 queryset=field.Meta.model.objects.all(), required=False, allow_null=True
             )
             self._override_run_validation(field)
+
+    def _make_related_field_read_only(self):
+        for name, serializer in self._nested_serializers_reverse.items():
+            if isinstance(serializer, ListSerializer):
+                serializer = serializer.child
+            model_field: models.Field = self.Meta.model._meta.get_field(name)
+            related_name = model_field.field.name
+            if related_name in serializer.fields:
+                serializer.fields[related_name].write_only = False
+                serializer.fields[related_name].read_only = True
 
     def _override_run_validation(self, field):
         original = field.run_validation
