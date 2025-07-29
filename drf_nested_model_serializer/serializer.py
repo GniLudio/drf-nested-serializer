@@ -84,11 +84,8 @@ class NestedModelSerializer(ModelSerializer):
             validated_data[name] = value
 
         disabled_serializers = []
-        for name in validated_data.keys():
-            if name not in self._nested_serializers_forward:
-                continue
-            if isinstance(validated_data[name], (dict, list)):
-                serializer = self.fields[name]
+        for name, serializer in self._nested_serializers_forward.items():
+            if isinstance(validated_data.get(name), (list, dict)):
                 serializer.read_only = True
                 disabled_serializers.append(serializer)
 
@@ -117,7 +114,7 @@ class NestedModelSerializer(ModelSerializer):
                     for entry in value:
                         entry[model_field.field.name] = instance
         for name, value in reverse_data.items():
-            nested_serializer = self.fields[name]
+            nested_serializer = self._nested_serializers_reverse[name]
 
             model_field = self.Meta.model._meta.get_field(nested_serializer.source)
 
@@ -163,7 +160,7 @@ class NestedModelSerializer(ModelSerializer):
             reverse_data, self._nested_serializers_reverse
         )
         for name, value in result.items():
-            nested_serializer = self.fields[name]
+            nested_serializer = self._nested_serializers_reverse[name]
             model_field = self.Meta.model._meta.get_field(nested_serializer.source)
 
             if model_field.multiple:
