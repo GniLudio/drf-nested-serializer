@@ -234,15 +234,12 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
     ```
 
 
-### Nested Data
+## Data
 
-=== "Omit"
+=== "Do nothing"
     
     ```python
     data = {
-        # omit `nested`
-
-
 
     }
     ```
@@ -257,9 +254,6 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
     ```python
     data = {
         "nested": None
-    
-    
-    
     }
     ```
     ```python
@@ -268,14 +262,11 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
         instance = serializer.save()
     ```
 
-=== "Set to new"
+=== "Create new nested"
 
     ```python
     data = {
-        "nested": {
-            "id": None,
-            "name": "John Doe",
-        }
+        "nested": { "id": None, "name": "John Doe"}
     }
     ```
     ```python
@@ -288,10 +279,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 
     ```python
     data = {
-        "nested": {
-            "id": 3,
-
-        }
+        "nested": { "id": 3 }
     }
     ```
     ```python
@@ -300,14 +288,11 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
         instance = serializer.save()
     ```
 
-=== "Set to existing and update"
+=== "Set and update"
 
     ```json
     data = {
-        "nested": {
-            "id": 3,
-            "name": "John Doe",
-        }
+        "nested": { "id": 3, "name": "John Doe" }
     }
     ```
     ```python
