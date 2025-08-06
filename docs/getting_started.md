@@ -7,7 +7,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "One to One"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -39,7 +39,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "One to One Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -71,7 +71,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "Foreign Key"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -103,7 +103,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "Many to One Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -136,7 +136,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "Many to Many"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -168,7 +168,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "Many to Many Rel"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyNestedModel, MyParentModel
 
@@ -200,7 +200,7 @@ A serializer just needs to inherit from `NestedModelSerializer` to allow writabl
 === "Through"
 
     ```python hl_lines="10"
-    from drf_nested_serializer.serializer import NestedModelSerializer
+    from drf_nested_model_serializer.serializer import NestedModelSerializer
     from rest_framework.serializers import ModelSerializer
     from .models import MyThroughModel, MyParentModel
 
