@@ -16,7 +16,7 @@ Find out more with the [Getting Started](https://gniludio.github.io/drf-nested-m
 
 ```python hl_lines="10"
 from rest_framework.serializers import ModelSerializer
-from drf_nested_serializer.serializer import NestedModelSerializer
+from drf_nested_model_serializer.serializer import NestedModelSerializer
 from .models import MyChildModel, MyParentModel
 
 class MyChildSerializer(ModelSerializer):
