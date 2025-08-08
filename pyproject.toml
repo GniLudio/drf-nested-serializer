@@ -1,6 +1,6 @@
 [project]
 name = "drf-nested-model-serializer"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="GniLudio" },
 ]
@@ -24,3 +24,6 @@ packages=['drf_nested_model_serializer']
 [build-system]
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+drf_nested_model_serializer = ["*.pyi"]
