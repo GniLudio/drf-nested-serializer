@@ -40,7 +40,7 @@ class NestedModelSerializer(ModelSerializer):
 
     def _add_primary_key_fields(self):
         for field in self._nested_serializers.values():
-            nested_pk_name = get_pk_name(field)
+            nested_pk_name = _get_pk_name(field)
             if isinstance(field, ListSerializer):
                 field = field.child
             field.fields[nested_pk_name] = PrimaryKeyRelatedField(
@@ -60,7 +60,7 @@ class NestedModelSerializer(ModelSerializer):
 
     def _override_run_validation(self, field):
         original = field.run_validation
-        pk_name = get_pk_name(field)
+        pk_name = _get_pk_name(field)
 
         def run_validation(data=empty):
             original_required = {}
@@ -120,7 +120,7 @@ class NestedModelSerializer(ModelSerializer):
 
             if isinstance(model_field, models.OneToOneRel):
                 previous_instance = getattr(instance, nested_serializer.source, None)
-                pk_name = get_pk_name(nested_serializer)
+                pk_name = _get_pk_name(nested_serializer)
                 next_instance = getattr(value, pk_name, None)
                 if previous_instance is not None and previous_instance != next_instance:
                     if model_field.field.null:
@@ -130,7 +130,7 @@ class NestedModelSerializer(ModelSerializer):
                         previous_instance.delete()
             elif isinstance(model_field, models.ManyToOneRel):
                 previous_instances = getattr(instance, nested_serializer.source).all()
-                pk_name = get_pk_name(nested_serializer)
+                pk_name = _get_pk_name(nested_serializer)
                 next_instances = [
                     entry[pk_name]
                     for entry in value
@@ -145,7 +145,7 @@ class NestedModelSerializer(ModelSerializer):
                             entry.delete()
             elif isinstance(model_field, models.ManyToManyRel):
                 previous_instances = getattr(instance, nested_serializer.source).all()
-                pk_name = get_pk_name(nested_serializer)
+                pk_name = _get_pk_name(nested_serializer)
                 next_instances = [
                     entry[pk_name]
                     for entry in value
@@ -184,7 +184,7 @@ class NestedModelSerializer(ModelSerializer):
         serializer = self._nested_serializers[name]
         if isinstance(serializer, ListSerializer):
             serializer = serializer.child
-        pk_name = get_pk_name(serializer)
+        pk_name = _get_pk_name(serializer)
         instance = value.pop(pk_name, None)
         if instance is None:
             return serializer.create(value)
@@ -262,7 +262,7 @@ class NestedModelSerializer(ModelSerializer):
         return {}
 
 
-def get_pk_name(serializer):
+def _get_pk_name(serializer):
     if isinstance(serializer, ListSerializer):
         serializer = serializer.child
 
