@@ -26,6 +26,7 @@ edit_uri: edit/main/docs/
 nav:
     - Home: index.md
     - Getting Started: getting_started.md
+    - Model Observer: model_observer.md
 
 extra_css:
     - style.css
