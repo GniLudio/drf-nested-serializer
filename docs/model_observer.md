@@ -10,23 +10,23 @@ from djangochannelsrestframework.consumers import GenericAsyncAPIConsumer
 from djangochannelsrestframework.decorators import action
 from drf_nested_model_serializer.djangochannelsrestframework.observer import nested_model_observer
 
-from .serializers import UserSerializer, CommentSerializer  # `CommentSerializer` inherit from `NestedModelSerializer`
-from .models import User, Comment
+from .serializers import MyNestedModelSerializer
+from .models import MyModel
 
 class MyConsumer(GenericAsyncAPIConsumer):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = MyNestedModelSerializer
 
-    @nested_model_observer(Comment, CommentSerializer)
-    async def comment_activity(self, message, observer=None, subscribing_request_ids=[], **kwargs):
+    @nested_model_observer(Comment, MyNestedModelSerializer)
+    async def my_nested_model_serializer_activity(self, message, observer=None, subscribing_request_ids=[], **kwargs):
         for request_id in subscribing_request_ids:
             await self.send_json({"message": message, "request_id": request_id})
 
-    @comment_activity.serializer
-    def comment_activity(self, instance: Comment, action, **kwargs):
-        return CommentSerializer(instance).data
+    @my_nested_model_serializer_activity.serializer
+    def my_nested_model_serializer_activity(self, instance: Comment, action, **kwargs):
+        return MyNestedModelSerializer(instance).data
 
     @action()
-    async def subscribe_to_comment_activity(self, request_id, **kwargs):
-        await self.comment_activity.subscribe(request_id=request_id)
+    async def subscribe_to_my_nested_model_serializer_activity(self, request_id, **kwargs):
+        await self.my_nested_model_serializer_activity.subscribe(request_id=request_id)
 ```
