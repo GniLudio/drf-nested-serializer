@@ -13,14 +13,26 @@ class NestedModelObserver(ModelObserver):
     Observer that automatically detects nested children from the serializer_class of the consumer.
     """
 
-    def __init__(self, func, model_cls, serializer_class, partition="*", many_to_many=False, **kwargs):
+    def __init__(
+        self,
+        func,
+        model_cls,
+        serializer_class,
+        partition="*",
+        many_to_many=False,
+        **kwargs,
+    ):
         # Track pending parent updates to avoid duplicates
         self._pending_parent_updates = set()
 
         if serializer_class is None:
-            raise ValueError(_("serializer_class must be provided for NestedModelObserver"))
+            raise ValueError(
+                _("serializer_class must be provided for NestedModelObserver")
+            )
 
-        super().__init__(func, model_cls, partition, serializer_class, many_to_many, **kwargs)
+        super().__init__(
+            func, model_cls, partition, serializer_class, many_to_many, **kwargs
+        )
 
     def _connect(self):
         super()._connect()
@@ -31,9 +43,13 @@ class NestedModelObserver(ModelObserver):
         serializer = self._serializer_class()
 
         for field in serializer._nested_serializers.values():
-            nested_serializer = field.child if isinstance(field, ListSerializer) else field
+            nested_serializer = (
+                field.child if isinstance(field, ListSerializer) else field
+            )
 
-            child_model = getattr(getattr(nested_serializer, "Meta", None), "model", None)
+            child_model = getattr(
+                getattr(nested_serializer, "Meta", None), "model", None
+            )
 
             if not child_model:
                 continue
