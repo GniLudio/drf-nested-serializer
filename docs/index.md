@@ -11,6 +11,7 @@ Find out more with the [Getting Started](https://gniludio.github.io/drf-nested-m
 - Drop-in replacement
 - Create and update support
 - Flexible field in- and exclusion
+- Model Observer for [djangochannelsrestframework](https://github.com/NilCoalescing/djangochannelsrestframework)
 
 ## Example
 
