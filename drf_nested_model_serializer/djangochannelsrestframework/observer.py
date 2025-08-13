@@ -1,3 +1,5 @@
+from functools import partial
+
 from django.db import models
 from django.db import transaction
 from django.db.models.signals import post_delete
@@ -6,6 +8,21 @@ from django.utils.translation import gettext as _
 from djangochannelsrestframework.observer.model_observer import Action
 from djangochannelsrestframework.observer.model_observer import ModelObserver
 from rest_framework.serializers import ListSerializer
+
+
+def nested_model_observer(model, serializer_class, many_to_many=False, **kwargs):
+    """
+    Should be used as a method decorator eg: `@nested_model_observer(MyModel, MySerializer)`
+
+    The serializer class has to be a `NestedModelSerializer`.
+    """
+    return partial(
+        NestedModelObserver,
+        model_cls=model,
+        serializer_class=serializer_class,
+        many_to_many=many_to_many,
+        **kwargs,
+    )
 
 
 class NestedModelObserver(ModelObserver):
