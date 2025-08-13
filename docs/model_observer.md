@@ -8,7 +8,7 @@ Example:
 ```py
 from djangochannelsrestframework.consumers import GenericAsyncAPIConsumer
 from djangochannelsrestframework.decorators import action
-from drf_nested_model_serializer.djangochannelsrestframework.observer import nested_model_observer
+from drf_nested_model_serializer.observer import nested_model_observer
 
 from .serializers import MyNestedModelSerializer
 from .models import MyModel
