@@ -54,3 +54,11 @@ print(MyParentSerializer(instance=instance).data)
     }
 }
 ```
+
+## Build and publish
+> Increase version number in `pyproject.toml`.
+```shell
+stubgen -m drf_nested_model_serializer -o drf_nested_model_serializer
+py -m build
+py -m twine upload dist/*
+```
