@@ -1,0 +1,13 @@
+@media screen and (min-width: 1220px) { /* With both sidebars */
+  .md-main__inner.md-grid {
+    max-width: 1600px; 
+  }
+}
+@media screen and (min-width: 0px) and (max-width:956px) {} /* Without sidebars */
+@media screen and (min-width: 960px) and (max-width: 1219px) {} /* With right sidebar */
+
+
+th, td {
+    text-align: center;
+    vertical-align: middle !important;
+}
